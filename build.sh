@@ -3,13 +3,16 @@
 
 echo "正在编译学生信息查询系统..."
 
+# 确保data目录存在
+mkdir -p data
+
 # 检查Qt是否安装
 if command -v qmake &> /dev/null; then
     echo "使用qmake编译..."
     qmake student_info.pro
     make
     if [ $? -eq 0 ]; then
-        echo "编译成功！运行 ./student_info_gui 启动程序"
+        echo "编译成功！运行 ./build/student_info_gui 启动程序"
     else
         echo "编译失败"
         exit 1
@@ -26,6 +29,7 @@ elif command -v cmake &> /dev/null; then
         echo "编译失败"
         exit 1
     fi
+    cd ..
 else
     echo "错误：未找到qmake或cmake，请先安装Qt开发库"
     echo "Ubuntu/Debian: sudo apt-get install qt6-base-dev 或 qt5-default"

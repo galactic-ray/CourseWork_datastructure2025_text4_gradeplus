@@ -1,7 +1,25 @@
-*
-!.gitignore
-!build.sh
-!CMakeLists.txt
-!README.md
-!student_info.pro
-!main_gui.cpp
+# 编译输出
+build/
+*.o
+*.moc
+moc_*
+*.pro.user
+*.pro.user.*
+Makefile
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+
+# 可执行文件
+student_info_gui
+student_info_cli
+
+# IDE文件
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 数据文件（可选，如果不想提交数据）
+data/*.csv
