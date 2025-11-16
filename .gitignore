@@ -1,0 +1,7 @@
+*
+!.gitignore
+!build.sh
+!CMakeLists.txt
+!README.md
+!student_info.pro
+!main_gui.cpp
