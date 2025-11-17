@@ -7,6 +7,7 @@
 #include <QMainWindow>
 #include <QLineEdit>
 #include <QTableWidget>
+#include <QTreeWidget>
 #include <QLabel>
 #include <QString>
 #include "datamanager.h"
@@ -25,6 +26,7 @@ private slots:
     void onSaveCSV();
     void onLoadCSV();
     void refreshDataDisplay();
+    void refreshStructureView();
     void updateStatus(const QString &msg);
 
 private:
@@ -33,6 +35,7 @@ private:
     QLineEdit *majorInput, *classInput, *idInput, *nameInput;
     QLineEdit *searchMajorInput, *searchClassInput, *searchIdInput;
     QTableWidget *dataTable;
+    QTreeWidget *structureTree;
     QLabel *statusLabel;
 };
 

@@ -311,6 +311,8 @@ void MainWindow::refreshDataDisplay() {
     if (statusLabel) {
         statusLabel->setText(QString("专业: %1 | 班级: %2 | 学生: %3").arg(cntM).arg(cntC).arg(cntS));
     }
+
+    refreshStructureView();
 }
 
 void MainWindow::updateStatus(const QString &msg) {
@@ -364,6 +366,19 @@ void MainWindow::setupUI() {
     dataTable = new QTableWidget(viewTab);
     viewLayout->addWidget(dataTable);
     tabs->addTab(viewTab, "数据浏览");
+
+    // 标签4: 结构视图
+    QWidget *structureTab = new QWidget();
+    QVBoxLayout *structureLayout = new QVBoxLayout(structureTab);
+    QLabel *structureHint = new QLabel("说明：专业按名称升序排列，专业内班级按编号升序排列，班级内学生保持录入顺序（表示无序表）。", structureTab);
+    structureHint->setWordWrap(true);
+    structureLayout->addWidget(structureHint);
+    structureTree = new QTreeWidget(structureTab);
+    structureTree->setColumnCount(2);
+    structureTree->setHeaderLabels(QStringList() << "节点" << "信息");
+    structureTree->header()->setStretchLastSection(true);
+    structureLayout->addWidget(structureTree);
+    tabs->addTab(structureTab, "结构视图");
     
     mainLayout->addWidget(tabs);
     
@@ -393,5 +408,38 @@ void MainWindow::setupUI() {
     // 状态栏
     statusLabel = new QLabel("就绪", this);
     mainLayout->addWidget(statusLabel);
+}
+
+void MainWindow::refreshStructureView() {
+    if (!structureTree) return;
+
+    structureTree->clear();
+    structureTree->setColumnCount(2);
+    structureTree->setHeaderLabels(QStringList() << "节点" << "信息");
+    structureTree->header()->setStretchLastSection(true);
+
+    for (auto &m : gMajors) {
+        size_t classCount = m.classes.size();
+        size_t studentCount = 0;
+        for (auto &c : m.classes) studentCount += c.students.size();
+
+        auto *majorItem = new QTreeWidgetItem(structureTree);
+        majorItem->setText(0, QString::fromStdString(m.majorName));
+        majorItem->setText(1, QString("班级: %1 | 学生: %2").arg(classCount).arg(studentCount));
+
+        for (auto &c : m.classes) {
+            auto *classItem = new QTreeWidgetItem(majorItem);
+            classItem->setText(0, QString::fromStdString(c.classID));
+            classItem->setText(1, QString("学生: %1").arg(c.students.size()));
+
+            for (auto &s : c.students) {
+                auto *studentItem = new QTreeWidgetItem(classItem);
+                studentItem->setText(0, QString::fromStdString(s.id));
+                studentItem->setText(1, QString::fromStdString(s.name));
+            }
+        }
+    }
+
+    structureTree->expandAll();
 }
 
