@@ -22,5 +22,5 @@ student_info_cli
 *~
 
 # 数据文件（可选，如果不想提交数据）
-data/*.csv
-!data/example.csv
+# data/*.csv
+# !data/example.csv
